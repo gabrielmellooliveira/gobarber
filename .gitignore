@@ -1,3 +1,7 @@
+# About project
+yarn.lock
+*tmp/
+
 # Logs
 logs
 *.log
