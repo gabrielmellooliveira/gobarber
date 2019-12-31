@@ -13,14 +13,12 @@ class AppointmentController {
         const appointments = await Appointment.findAll({
             where: {
                 user_id: req.userId,
-                canceled_at: null
+                canceled_at: null,
             },
             attributes: ['id', 'date'],
             limit: 20,
             offset: (page - 1) * 20,
-            order: [
-                'date'
-            ],
+            order: ['date'],
             include: [
                 {
                     model: User,
@@ -30,11 +28,11 @@ class AppointmentController {
                         {
                             model: File,
                             as: 'avatar',
-                            attributes: ['id', 'path', 'url']
-                        }
-                    ]
-                }
-            ]
+                            attributes: ['id', 'path', 'url'],
+                        },
+                    ],
+                },
+            ],
         });
 
         return res.json(appointments);
@@ -53,16 +51,28 @@ class AppointmentController {
         const { provider_id, date } = req.body;
 
         /**
+         * Check if a provider is making an appointment for himself
+         */
+        if (provider_id === req.userId) {
+            return res.status(401).json({
+                error: 'A provider cannot schedule an appointment with himself',
+            });
+        }
+
+        /**
          * Check if provider_id is a provider
          */
         const isProvider = await User.findOne({
             where: {
-                id: provider_id, provider: true
-            }
+                id: provider_id,
+                provider: true,
+            },
         });
 
         if (!isProvider) {
-            return res.status(401).json({ error: 'You can only create appointments with providers' });
+            return res.status(401).json({
+                error: 'You can only create appointments with providers',
+            });
         }
 
         /**
@@ -71,7 +81,9 @@ class AppointmentController {
         const hourStart = startOfHour(parseISO(date));
 
         if (isBefore(hourStart, new Date())) {
-            return res.status(400).json({ error: 'Past dates are not permitted' });
+            return res
+                .status(400)
+                .json({ error: 'Past dates are not permitted' });
         }
 
         /**
@@ -81,18 +93,20 @@ class AppointmentController {
             where: {
                 provider_id,
                 canceled_at: null,
-                date: hourStart
-            }
+                date: hourStart,
+            },
         });
 
         if (checkAvailability) {
-            return res.status(400).json({ error: 'Appointment date is not available' });
+            return res
+                .status(400)
+                .json({ error: 'Appointment date is not available' });
         }
 
         const appointment = await Appointment.create({
             user_id: req.userId,
             provider_id,
-            date: hourStart
+            date: hourStart,
         });
 
         /**
