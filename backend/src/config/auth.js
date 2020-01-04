@@ -1,4 +1,4 @@
 export default {
-    secret: process.env.APP_SECRET, // md5online (gobarber-gabrielmellooliveira-backend)
+    secret: process.env.APP_SECRET,
     expiresIn: '7d',
 };
