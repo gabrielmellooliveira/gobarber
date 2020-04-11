@@ -1,31 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import logo from '~/assets/logo-purple.svg';
+import Notifications from '~/components/Notifications';
 
+import logo from '~/assets/logo-purple.svg';
 import { Container, Content, Profile } from './styles';
 
 export default function Header() {
-  return (
-	<Container>
-		<Content>
-			<nav>
-				<img src={logo} alt="gobarber" />
+	return (
+		<Container>
+			<Content>
+				<nav>
+					<img src={logo} alt="gobarber" />
 
-				<Link to="/dashboard">DASHBOARD</Link>
-			</nav>
+					<Link to="/dashboard">DASHBOARD</Link>
+				</nav>
 
-			<aside>
-				<Profile>
-					<div>
-						<strong></strong>
-						<Link to="/profile">Meu perfil</Link>
-					</div>
+				<aside>
+					<Notifications />
 
-					<img src="https://api.adorable.io/avatars/50/abott@adorable.png" alt="teste"/>
-				</Profile>
-			</aside>
-		</Content>
-	</Container>
-  );
+					<Profile>
+						<div>
+							<strong />
+							<Link to="/profile">Meu perfil</Link>
+						</div>
+
+						<img
+							src="https://api.adorable.io/avatars/50/abott@adorable.png"
+							alt="teste"
+						/>
+					</Profile>
+				</aside>
+			</Content>
+		</Container>
+	);
 }
