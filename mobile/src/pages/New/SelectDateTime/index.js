@@ -10,10 +10,10 @@ import DateInput from '~/components/DateInput';
 import { Container, HourList, Hour, HourText } from './styles';
 
 export default function SelectDateTime({ navigation }) {
+    const provider = navigation.getParam('provider');
+
     const [date, setDate] = useState(new Date());
     const [hours, setHours] = useState([]);
-
-    const provider = navigation.getParam('provider');
 
     useEffect(() => {
         async function loadAvailable() {
