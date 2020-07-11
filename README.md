@@ -1,4 +1,3 @@
-# gobarber
 <h1 align="center">
   goBarber
 </h1>
